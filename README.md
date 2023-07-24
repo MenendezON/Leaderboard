@@ -27,7 +27,7 @@
 - [❓ FAQ (OPTIONAL)](#faq)
 - [📝 License](#license)
 
-# 📖 To-do list <a name="about-project"></a>
+# 📖 Leaderboard list <a name="about-project"></a>
 
 **Leaderboard** is a simple webpack project build with HTML, CSS and Javascript using techs like linters, and Gitflow.
 
