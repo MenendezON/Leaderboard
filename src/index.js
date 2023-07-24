@@ -69,6 +69,7 @@ const launcher = () => {
   main.appendChild(left);
   main.appendChild(right);
 
+  body.innerHTML = '';
   body.appendChild(main);
 };
 
