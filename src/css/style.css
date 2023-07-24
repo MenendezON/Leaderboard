@@ -1,0 +1,72 @@
+body {
+  background-color: bisque;
+  box-sizing: border-box;
+}
+
+.main {
+  width: 1000px;
+  margin: 0 auto;
+  background-color: white;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.header {
+  flex: 100%;
+  border: 1px solid silver;
+}
+
+h1 {
+  text-align: center;
+}
+
+.left,
+.right {
+  flex: 1 40%;
+  padding: 50px;
+}
+
+.left .title {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.left .title button {
+  height: 40px;
+}
+
+table {
+  width: 100%;
+}
+
+th,
+td {
+  border: 1px solid silver;
+}
+
+th {
+  text-align: left;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+form input {
+  height: 50px;
+  font-size: 12pt;
+  margin-bottom: 10px;
+  border-radius: 15px;
+}
+
+form input[type='submit'] {
+  width: 200px;
+}
+
+.footer {
+  background-color: blueviolet;
+  flex: 100%;
+}
