@@ -153,5 +153,6 @@ const launcher = () => {
 window.addEventListener('DOMContentLoaded', () => {
   gameId = JSON.parse(localStorage.getItem('gameResult')) ?? [];
   getId();
+  main.innerHTML = '';
   launcher();
 });
