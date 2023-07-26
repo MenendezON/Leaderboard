@@ -1,11 +1,97 @@
 import './css/style.css';
 
-const body = document.querySelector('body');
+const gameName = 'LeaderBoard';
+const apiUrl = 'https://us-central1-js-capstone-backend.cloudfunctions.net/api';
+const main = document.querySelector('.main');
+const message = document.querySelector('.message');
 
+let gameId = [];
+
+const showMessage = (message, classToRemove, classToAdd, innerHTML) => {
+  message.classList.remove(classToRemove);
+  message.classList.add(classToAdd);
+  message.innerHTML = innerHTML;
+  setTimeout(() => {
+    message.classList.remove(classToAdd);
+    message.innerHTML = '';
+  }, 3000);
+};
+
+const createGame = async (name, message) => {
+  const response = await fetch(`${apiUrl}/games`, {
+    method: 'POST',
+    body: JSON.stringify({
+      name,
+    }),
+    headers: {
+      'Content-type': 'application/json; charset=UTF-8',
+    },
+  });
+  const json = await response.json();
+  const newId = {
+    ID: json.result,
+  };
+  localStorage.setItem('gameResult', JSON.stringify(newId));
+  showMessage(message, 'error', 'success', json.result);
+};
+
+const getId = () => {
+  if (gameId.ID === undefined) {
+    createGame(gameName, message);
+  }
+  if ((gameId.ID !== undefined) && (gameId.ID.split(' ').length !== 1)) {
+    const tab = gameId.ID.split(' ');
+    [, , , gameId.ID] = tab;
+    localStorage.setItem('gameResult', JSON.stringify(gameId));
+    return gameId.ID;
+  }
+  return gameId.ID;
+};
+
+const getScores = async () => {
+  const response = await fetch(`${apiUrl}/games/${gameId.ID}/scores/`);
+  const json = await response.json();
+  const stortedScores = json.result.sort((a, b) => b.score - a.score);
+  const table = document.querySelector('table');
+  table.innerHTML = '';
+  stortedScores.forEach((element) => {
+    if (json.result.length > 0) {
+      const tr = document.createElement('tr');
+      const td = document.createElement('td');
+      tr.appendChild(td);
+      td.textContent = `${element.user} : ${element.score}`;
+      table.appendChild(tr);
+    } else {
+      table.innerHTML = 'No scores yet';
+    }
+  });
+};
+
+const addScore = async (user, score) => {
+  if (user === '' || score === '') {
+    showMessage(message, 'success', 'error', 'Please fill in all fields');
+  } else {
+    const response = await fetch(`${apiUrl}/games/${gameId.ID}/scores/`, {
+      method: 'POST',
+      body: JSON.stringify({
+        user,
+        score,
+      }),
+      headers: {
+        'Content-type': 'application/json; charset=UTF-8',
+      },
+    });
+    if (response.ok) {
+      getScores();
+    } else {
+      showMessage(message, 'success', 'error', 'Something went wrong');
+    }
+
+    const json = await response.json();
+    showMessage(message, 'error', 'success', json.result);
+  }
+};
 const launcher = () => {
-  const main = document.createElement('main');
-  main.classList.add('main');
-
   const header = document.createElement('div');
   header.classList.add('header');
   const h1 = document.createElement('h1');
@@ -22,23 +108,11 @@ const launcher = () => {
   div1.appendChild(lh2);
   const btnRefresh = document.createElement('button');
   btnRefresh.textContent = 'Refresh';
+  btnRefresh.addEventListener('click', () => {
+    getScores();
+  });
   div1.appendChild(btnRefresh);
   const table = document.createElement('table');
-  const tr = document.createElement('tr');
-  const tr1 = document.createElement('tr');
-  const tr2 = document.createElement('tr');
-  const td = document.createElement('th');
-  const td1 = document.createElement('th');
-  const td2 = document.createElement('th');
-  td.textContent = 'Libellé: 100';
-  td1.textContent = 'Libellé: 50';
-  td2.textContent = 'Libellé: 20';
-  tr.appendChild(td);
-  tr1.appendChild(td1);
-  tr2.appendChild(td2);
-  table.appendChild(tr);
-  table.appendChild(tr1);
-  table.appendChild(tr2);
   left.appendChild(div1);
   left.appendChild(table);
 
@@ -52,13 +126,19 @@ const launcher = () => {
   const form = document.createElement('form');
   const input1 = document.createElement('input');
   input1.type = 'text';
-  input1.name = 'name';
+  input1.name = 'user';
   const input2 = document.createElement('input');
   input2.type = 'text';
   input2.name = 'score';
   const btnSubmit = document.createElement('input');
   btnSubmit.type = 'submit';
   btnSubmit.value = 'Submit';
+  btnSubmit.addEventListener('click', (e) => {
+    e.preventDefault();
+    const user = input1.value;
+    const score = input2.value;
+    addScore(user, score);
+  });
   form.appendChild(input1);
   form.appendChild(input2);
   form.appendChild(btnSubmit);
@@ -68,11 +148,11 @@ const launcher = () => {
   main.appendChild(header);
   main.appendChild(left);
   main.appendChild(right);
-
-  body.innerHTML = '';
-  body.appendChild(main);
 };
 
 window.addEventListener('DOMContentLoaded', () => {
+  gameId = JSON.parse(localStorage.getItem('gameResult')) ?? [];
+  getId();
+  main.innerHTML = '';
   launcher();
 });
