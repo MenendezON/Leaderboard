@@ -1,6 +1,8 @@
 body {
   background-color: bisque;
   box-sizing: border-box;
+  padding: 0;
+  margin: 0;
 }
 
 .main {
@@ -14,10 +16,13 @@ body {
 .header {
   flex: 100%;
   border: 1px solid silver;
+  background-color: gray;
+  border-bottom: 5px dashed black;
 }
 
 h1 {
   text-align: center;
+  text-transform: uppercase;
 }
 
 .left,
@@ -33,17 +38,42 @@ h1 {
   align-items: baseline;
 }
 
+button,
+form input[type='submit'] {
+  width: 200px;
+  border-radius: 8px;
+  font-size: 12pt;
+  font-weight: 500;
+  border: 1px solid gray;
+}
+
+button:hover,
+form input[type='submit']:hover {
+  background-color: gray;
+  color: white;
+  border: 0;
+}
+
 .left .title button {
   height: 40px;
 }
 
 table {
   width: 100%;
+  border-collapse: collapse;
 }
 
 th,
 td {
   border: 1px solid silver;
+  padding: 10px;
+  font-size: large;
+  text-transform: uppercase;
+}
+
+td:first-child {
+  font-weight: bold;
+  width: 50%;
 }
 
 th {
@@ -56,18 +86,38 @@ form {
 }
 
 form input {
-  height: 40px;
+  height: 35px;
   padding: 5px 10px;
   font-size: 12pt;
   margin-bottom: 10px;
-  border-radius: 15px;
-}
-
-form input[type='submit'] {
-  width: 200px;
+  border-radius: 8px;
+  border: 1px solid gray;
 }
 
 .footer {
   background-color: blueviolet;
   flex: 100%;
+}
+
+.message {
+  width: 94%;
+  background-color: red;
+  position: absolute;
+  margin: 50px auto;
+  left: 3%;
+  border-radius: 8px;
+  color: white;
+  text-align: center;
+}
+
+.success {
+  background-color: #369a68;
+  height: 20px;
+  padding: 5px;
+}
+
+.error {
+  background-color: red;
+  height: 20px;
+  padding: 5px;
 }

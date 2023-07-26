@@ -58,8 +58,11 @@ const getScores = async () => {
     if (json.result.length > 0) {
       const tr = document.createElement('tr');
       const td = document.createElement('td');
+      const td1 = document.createElement('td');
+      td.textContent = `${element.user}`;
+      td1.textContent = `${element.score}`;
       tr.appendChild(td);
-      td.textContent = `${element.user} : ${element.score}`;
+      tr.appendChild(td1);
       table.appendChild(tr);
     } else {
       table.innerHTML = 'No scores yet';
@@ -127,9 +130,11 @@ const launcher = () => {
   const input1 = document.createElement('input');
   input1.type = 'text';
   input1.name = 'user';
+  input1.placeholder = 'Add a name';
   const input2 = document.createElement('input');
-  input2.type = 'text';
+  input2.type = 'number';
   input2.name = 'score';
+  input2.placeholder = 'Add a score';
   const btnSubmit = document.createElement('input');
   btnSubmit.type = 'submit';
   btnSubmit.value = 'Submit';
